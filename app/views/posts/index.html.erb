@@ -1,13 +1,3 @@
-<% if !params[:author].blank? %>
-  <% @posts = Post.where(author: params[:author]) %>
-<% elsif !params[:date].blank? %>
-  <% if params[:date] == "Today" %>
-    <% @posts = Post.where("created_at >=?", Time.zone.today.beginning_of_day) %>
-  <% else %>
-    <% @posts = Post.where("created_at <?", Time.zone.today.beginning_of_day) %>
-  <% end %>
-<% end %>
-
 <h1>Believe It Or Not I'm Blogging On Air</h1>
 
 <div>
@@ -15,12 +5,10 @@
   <%= form_tag("/posts", method: "get") do %>
     <%= select_tag "author", options_from_collection_for_select(Author.all, "id", "name"), include_blank: true %>
     <%= submit_tag "Filter" %>
+    <%= select_tag "date", options_for_select(["Today", "Old News"]), include_blank: true %>
+    <%= submit_tag "Filter" %>
   <% end %>
 </div>
-
-<%= select_tag "date", options_for_select(["Today", "Old News"]), include_blank: true %>
-  <%= submit_tag "Filter" %>
-<% end %>
 
 <% @posts.each do |post| %>
   <div>
